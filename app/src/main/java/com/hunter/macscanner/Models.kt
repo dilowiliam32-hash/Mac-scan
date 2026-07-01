@@ -7,7 +7,7 @@ data class LocationInfo(
     val ip: String = ""
 ) {
     fun getSummary(): String {
-        val flag = countryCode.ifEmpty { "XX" }.map { 0x1F1E6 + it.code - 'A'.code }.toCharArray().concatToString()
+        val flag = countryCode.ifEmpty { "XX" }.map { (0x1F1E6 + it.code - 'A'.code).toChar() }.joinToString("")
         return if (city != "Unknown") "$flag $country, $city" else "$flag $country"
     }
 }
