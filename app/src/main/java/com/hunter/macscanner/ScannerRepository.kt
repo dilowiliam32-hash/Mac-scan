@@ -115,7 +115,13 @@ class ScannerRepository {
 
     private fun getServerLocation(baseUrl: String): LocationInfo {
         return try {
-            val request = Request.Builder().url("http://ip-api.com/json/").build()
+            val host = try {
+                java.net.URL(baseUrl).host
+            } catch (e: Exception) {
+                ""
+            }
+            val url = if (host.isNotEmpty()) "http://ip-api.com/json/$host" else "http://ip-api.com/json/"
+            val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
             val json = JsonParser.parseString(response.body?.string() ?: "").asJsonObject
             LocationInfo(
